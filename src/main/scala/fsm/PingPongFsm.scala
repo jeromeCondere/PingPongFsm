@@ -38,7 +38,7 @@ class PingPongFsm extends FSM[State,Data] with Actor {
                                     {
                                       self ! PingMessage
                                     }
-                                    log.info("Pong! - goto Pong State")
+                                    log.info("Pong! (Ping State currently)")
                                     goto(PongState)
     case _ => stay()
   }
@@ -48,7 +48,7 @@ class PingPongFsm extends FSM[State,Data] with Actor {
                                     {
                                       self ! PongMessage
                                     }
-                                    log.info("Ping! - goto Ping State")
+                                    log.info("Ping! (Pong State currently)")
                                     goto(PingState)
     case _ => stay()
   }
