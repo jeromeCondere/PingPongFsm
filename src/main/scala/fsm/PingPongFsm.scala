@@ -18,12 +18,15 @@ case object PongMessage
 case object Start
 
 class PingPongFsm extends FSM[State,Data] with Actor {
+  val system = context.system
+  import system.dispatcher
   
   startWith(InitState, Void)
   
   when(InitState)
   {
-    case Event(Start,Void) => self ! PongMessage
+    case Event(Start,Void) => 
+                              self ! PongMessage
                               log.info("Started goto Ping State")
                               goto(PingState) using(Full)
     case _ => stay() 
@@ -31,14 +34,20 @@ class PingPongFsm extends FSM[State,Data] with Actor {
   
   when(PingState)
   {
-    case Event(PongMessage,Full) => self ! PingMessage
+    case Event(PongMessage,Full) => system.scheduler.scheduleOnce(1 seconds)
+                                    {
+                                      self ! PingMessage
+                                    }
                                     log.info("Pong! - goto Pong State")
                                     goto(PongState)
     case _ => stay()
   }
     when(PongState)
   {
-    case Event(PingMessage,Full) => self ! PongMessage
+    case Event(PingMessage,Full) => system.scheduler.scheduleOnce(1 seconds)
+                                    {
+                                      self ! PongMessage
+                                    }
                                     log.info("Ping! - goto Ping State")
                                     goto(PingState)
     case _ => stay()
