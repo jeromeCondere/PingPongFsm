@@ -3,3 +3,6 @@ project/target/
 project/project/
 *~
 *#
+.classpath
+.project
+.settings
