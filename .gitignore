@@ -7,3 +7,4 @@ project/project/
 .project
 .settings
 /bin/
+.ca*
